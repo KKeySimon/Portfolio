@@ -10,6 +10,7 @@
 <body>
     <canvas id="gameCanvas" width="700" height="500"></canvas>
     <script>
+        ////https://www.youtube.com/watch?v=H9CSWMxJx84&ab_channel=freeCodeCamp.org
         const FPS = 30;
         const FRICTION = 0.7; // friction coefficient (0 = no friction, 1 = lots of friction)
         const ROIDS_JAG = 0.4; // jaggedness of the asteroids (0 = None, 1 = Lots)
@@ -17,10 +18,11 @@
         const ROIDS_SIZE = 100; // starting size of asteroids in pixels
         const ROIDS_SPEED = 50; // max starting speed of asteroids in pixels per second
         const ROIDS_VERT = 10; // average number of verticies on each asteroid
-        
         const SHIP_SIZE = 30; // Ship height in pixels
         const SHIP_THRUST = 5; // acceleration of the ship in pixels per second ^ 2
         const TURN_SPEED = 360; // turn speed in degrees per second
+        const SHOW_CENTER_DOT = false; // show ship's center dot
+        const SHOW_BOUNDING = false; // show or hide collision boudingad
 
         /** @type {HTMLCanvasElement} */
         var canv = document.getElementById("gameCanvas");
@@ -240,8 +242,11 @@
             }
 
             //centre dot
-            ctx.fillStyle = "red";
-            ctx.fillRect(ship.x - 1, ship.y - 1, 2, 2);
+            if(SHOW_CENTER_DOT){
+                ctx.fillStyle = "red";
+                ctx.fillRect(ship.x - 1, ship.y - 1, 2, 2);
+            }
+            
         }
     </script>
 </body>
