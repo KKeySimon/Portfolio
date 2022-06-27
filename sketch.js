@@ -4,12 +4,20 @@ var asteroids = [];
 var lasers = [];
 var level = 1;
 var lvlMult = 1 + 0.1 * level;
+var font;
 
 const TEXT_SIZE = 40;
 
 function setup() {
+  
   createCanvas(windowWidth, windowHeight);
+  button = createButton('click me');
+  button.position(0, 0);
   newGame();
+}
+
+function preload() {
+  font = loadFont('Hyperspace.ttf');
 }
 
 function newGame() {
@@ -75,6 +83,15 @@ function draw() {
   if (keyIsDown(RIGHT_ARROW)) ship.setRotation(0.1);
   if (keyIsDown(LEFT_ARROW)) ship.setRotation(-0.1);
   if (keyIsDown(UP_ARROW)) ship.boosting(true);
+
+  //Name
+  textSize(40);
+  fill(255);
+  textFont(font);
+  textAlign(CENTER);
+  text("Simon KYE", windowWidth / 2, windowHeight / 15);
+
+ 
 }
 
 function keyReleased() {
