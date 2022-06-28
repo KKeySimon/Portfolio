@@ -2,7 +2,8 @@ var ship;
 var minAsteroids = 3;
 var asteroids = [];
 var lasers = [];
-var livesVisual = []
+var linkAsteroids = [];
+var livesVisual = [];
 var level = 1;
 var lvlMult = 1 + 0.1 * level;
 var font;
@@ -22,6 +23,7 @@ function setup() {
   retryButton = createButton('Retry');
   retryButton.hide();
   ship = new Ship(0, true);
+  linkAsteroids.push(new Links('Github', 'https://github.com/KKeySimon'));
   newGame();
 }
 
@@ -51,7 +53,7 @@ function retry() {
   for (var i = asteroids.length - 1; i >= 0; i--) {
     asteroids.splice(i, 1);
   }
-  
+
   newGame();
   
 }
@@ -122,6 +124,11 @@ function draw() {
             break;
           }
         }
+        for(var j = linkAsteroids - 1; j >= 0; j--){
+          if (linkAsteroids[j].hits(lasers[i])) {
+            window.open(linkAsteroids[j].url);
+          }
+        }
       }
     }
   }
@@ -136,13 +143,19 @@ function draw() {
   if (keyIsDown(UP_ARROW)) ship.boosting(true);
 
   //Name
+  push();
   textSize(40);
   fill(255);
   textFont(font);
   textAlign(CENTER);
   text("Simon KYE", windowWidth / 2, windowHeight / 15);
+  pop();
 
- 
+  for (var i = 0; i < linkAsteroids.length; i++){
+    linkAsteroids[i].render();
+    linkAsteroids[i].update();
+    linkAsteroids[i].edges();
+  }
 }
 
 function keyReleased() {
