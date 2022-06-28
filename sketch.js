@@ -2,17 +2,26 @@ var ship;
 var minAsteroids = 3;
 var asteroids = [];
 var lasers = [];
+var livesVisual = []
 var level = 1;
 var lvlMult = 1 + 0.1 * level;
 var font;
+var disableButton;
+var retryButton;
+var lives;
+var gameDisabled = false;
+var gameOver = false;
 
-const TEXT_SIZE = 40;
+const GAME_LIVES = 3;
 
 function setup() {
-  
   createCanvas(windowWidth, windowHeight);
-  button = createButton('click me');
-  button.position(0, 0);
+  disableButton = createButton('Disable Game');
+  disableButton.position(windowWidth / 30, windowHeight / 30);
+  disableButton.mousePressed(disableGame);
+  retryButton = createButton('Retry');
+  retryButton.hide();
+  ship = new Ship(0, true);
   newGame();
 }
 
@@ -21,55 +30,97 @@ function preload() {
 }
 
 function newGame() {
-  ship = new Ship();
+  lives = GAME_LIVES;
   newLevel();
 }
 
 function newLevel() {
-  var text = "Level " + level;
   lvlMult = 1 + 0.1 * level;
   createAsteroids(lvlMult);
+  createLives(lives);
+}
+
+function disableGame() {
+  gameDisabled = true;
+}
+
+function retry() {
+  retryButton.hide();
+  gameOver = false;
+  gameDisabled = false;
+  for (var i = asteroids.length - 1; i >= 0; i--) {
+    asteroids.splice(i, 1);
+  }
+  
+  newGame();
+  
 }
 
 function createAsteroids(lvlMult){
   for (var i = 0; i < minAsteroids + level; i++){
-    console.log(lvlMult);
     asteroids.push(new Asteroid(0, 0, lvlMult));
+  }
+}
+
+function createLives(lives){
+  for (var i = 1; i <= lives; i++){
+    livesVisual.push(new Ship(i, false));
   }
 }
 
 function draw() {
   background(0);
-
-  for (var i = 0; i < asteroids.length; i++) {
-    if (ship.hits(asteroids[i])){
-      console.log("xd");
-    }
-    asteroids[i].render();
-    asteroids[i].update();
-    asteroids[i].edges();
+  if (gameOver) {
+    retryButton.show();
+    retryButton.position(windowWidth / 2, windowHeight / 2);
+    retryButton.mousePressed(retry);
   }
+  if (!gameDisabled) {
+    retryButton.hide();
+    textSize(25);
+    fill(255);
+    textAlign(CENTER);
+    text("Lvl:" + level, windowWidth * 14 / 15, windowHeight / 15);
 
-  for (var i = lasers.length - 1; i >= 0; i--) {
-    lasers[i].render();
-    lasers[i].update();
-    if(lasers[i].offScreen()) {
-      lasers.splice(i, 1);
-    } else {
-      for (var j = asteroids.length - 1; j >= 0; j--){
-        if(lasers[i].hits(asteroids[j])) {
-          if (asteroids[j].r > 20) {
-            var newAsteroids = asteroids[j].breakup(lvlMult);
-            asteroids = asteroids.concat(newAsteroids);
-          }
-          asteroids.splice(j, 1);
-          lasers.splice(i, 1);
+    for (var i = 0; i < asteroids.length; i++) {
+      if (ship.hits(asteroids[i])){
+        livesVisual.splice(lives - 1, 1);
+        lives -= 1;
+        if(lives == 0){
+          gameOver = true;
+          gameDisabled = true;
+        }
+      }
+      asteroids[i].render();
+      asteroids[i].update();
+      asteroids[i].edges();
+    }
 
-          if(asteroids.length == 0) {
-            level++;
-            newLevel();
+    for (var i = 0; i < livesVisual.length; i++){
+      livesVisual[i].render();
+    }
+
+    for (var i = lasers.length - 1; i >= 0; i--) {
+      lasers[i].render();
+      lasers[i].update();
+      if(lasers[i].offScreen()) {
+        lasers.splice(i, 1);
+      } else {
+        for (var j = asteroids.length - 1; j >= 0; j--){
+          if(lasers[i].hits(asteroids[j])) {
+            if (asteroids[j].r > 20) {
+              var newAsteroids = asteroids[j].breakup(lvlMult);
+              asteroids = asteroids.concat(newAsteroids);
+            }
+            asteroids.splice(j, 1);
+            lasers.splice(i, 1);
+
+            if(asteroids.length == 0) {
+              level++;
+              newLevel();
+            }
+            break;
           }
-          break;
         }
       }
     }
