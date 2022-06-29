@@ -1,7 +1,7 @@
 function Links(txt, url) {
     this.txt = txt;
     this.url = url;
-    this.r = 10;
+    this.r = 20;
     this.pos = createVector(random(width), random(height));
     this.vel = p5.Vector.random2D();
     
@@ -13,7 +13,6 @@ function Links(txt, url) {
         push();
         textSize(40);
         fill(255);
-        translate(this.pos.x, this.pos.y);
         textFont(loadFont('Hyperspace.ttf'));
         textAlign(CENTER);
         text(txt, this.pos.x, this.pos.y);
@@ -32,12 +31,5 @@ function Links(txt, url) {
         } else if (this.pos.y < 0) {
             this.pos.y = height;
         }
-    }
-
-    this.hits = function(laser) {
-        var d = dist(this.pos.x, this.pos.y, laser.pos.x, laser.pos.y);
-        if (d < this.r){
-            return true;
-        } return false;
     }
 }

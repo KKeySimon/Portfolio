@@ -108,6 +108,7 @@ function draw() {
       if(lasers[i].offScreen()) {
         lasers.splice(i, 1);
       } else {
+        
         for (var j = asteroids.length - 1; j >= 0; j--){
           if(lasers[i].hits(asteroids[j])) {
             if (asteroids[j].r > 20) {
@@ -124,8 +125,8 @@ function draw() {
             break;
           }
         }
-        for(var j = linkAsteroids - 1; j >= 0; j--){
-          if (linkAsteroids[j].hits(lasers[i])) {
+        for(var j = linkAsteroids.length - 1; j >= 0; j--){
+          if (lasers[i].hits(linkAsteroids[j])) {
             window.open(linkAsteroids[j].url);
           }
         }
@@ -148,7 +149,7 @@ function draw() {
   fill(255);
   textFont(font);
   textAlign(CENTER);
-  text("Simon KYE", windowWidth / 2, windowHeight / 15);
+  text("KKEY", windowWidth / 2, windowHeight / 15);
   pop();
 
   for (var i = 0; i < linkAsteroids.length; i++){
