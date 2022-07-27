@@ -3,7 +3,7 @@ function Asteroid(pos, r, lvl, url) {
     if (pos) {
         this.pos = pos.copy();
     } else {
-        this.pos = createVector(random(width), random(height));
+        this.pos = createVector(width / 2 + random(width), height / 2 + random(height));
     }
 
     if (r) {

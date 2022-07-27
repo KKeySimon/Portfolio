@@ -103,6 +103,7 @@ function draw() {
     }
 
     for (var i = lasers.length - 1; i >= 0; i--) {
+      var normalHit = false;
       lasers[i].render();
       lasers[i].update();
       if(lasers[i].offScreen()) {
@@ -122,14 +123,18 @@ function draw() {
               level++;
               newLevel();
             }
+            normalHit = true;
             break;
           }
         }
-        for(var j = linkAsteroids.length - 1; j >= 0; j--){
-          if (lasers[i].hits(linkAsteroids[j])) {
-            window.open(linkAsteroids[j].url);
+        if (!normalHit) {
+          for(var j = linkAsteroids.length - 1; j >= 0; j--){
+            if (lasers[i].hits(linkAsteroids[j])) {
+              window.open(linkAsteroids[j].url);
+            }
           }
         }
+        
       }
     }
   }
@@ -149,7 +154,7 @@ function draw() {
   fill(255);
   textFont(font);
   textAlign(CENTER);
-  text("KKEY", windowWidth / 2, windowHeight / 15);
+  text("SIMON KYE", windowWidth / 2, windowHeight / 15);
   pop();
 
   for (var i = 0; i < linkAsteroids.length; i++){
