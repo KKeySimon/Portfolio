@@ -1,9 +1,17 @@
 function Asteroid(pos, r, lvl, url) {
+    
+    getRandomPos = function(length) {
+        l = 0;
+        do {
+            l = random(length);
+        } while (l >= length / 3 && l <= 2 * length / 3);
+        return l;
+    }
 
     if (pos) {
         this.pos = pos.copy();
     } else {
-        this.pos = createVector(width / 2 + random(width), height / 2 + random(height));
+        this.pos = createVector(getRandomPos(width), getRandomPos(height));
     }
 
     if (r) {
@@ -26,6 +34,10 @@ function Asteroid(pos, r, lvl, url) {
     
     this.update = function() {
         this.pos.add(this.vel);
+    }
+    
+    this.posReset = function() {
+        this.pos = createVector(getRandomPos(width), getRandomPos(height));
     }
 
     this.breakup = function(lvl){

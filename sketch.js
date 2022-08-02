@@ -77,6 +77,16 @@ function draw() {
     retryButton.position(windowWidth / 2, windowHeight / 2);
     retryButton.mousePressed(retry);
   }
+  if (gameDisabled) {
+    for (var i = lasers.length - 1; i >= 0; i--) {
+      var normalHit = false;
+      lasers[i].render();
+      lasers[i].update();
+      if(lasers[i].offScreen()) {
+        lasers.splice(i, 1);
+      }
+    }
+  }
   if (!gameDisabled) {
     retryButton.hide();
     textSize(25);
@@ -85,17 +95,21 @@ function draw() {
     text("Lvl:" + level, windowWidth * 14 / 15, windowHeight / 15);
 
     for (var i = 0; i < asteroids.length; i++) {
+      asteroids[i].render();
+      asteroids[i].update();
+      asteroids[i].edges();
       if (ship.hits(asteroids[i])){
         livesVisual.splice(lives - 1, 1);
         lives -= 1;
+        for (var i = 0; i < asteroids.length; i++) {
+          asteroids[i].posReset();
+        }
         if(lives == 0){
           gameOver = true;
           gameDisabled = true;
         }
       }
-      asteroids[i].render();
-      asteroids[i].update();
-      asteroids[i].edges();
+      
     }
 
     for (var i = 0; i < livesVisual.length; i++){
