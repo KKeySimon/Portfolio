@@ -24,6 +24,7 @@ function setup() {
   retryButton.hide();
   ship = new Ship(0, true);
   linkAsteroids.push(new Links('Github', 'https://github.com/KKeySimon'));
+  linkAsteroids.push(new Links('ArtGuessr', 'https://artguessr.art'));
   newGame();
 }
 
