@@ -25,6 +25,7 @@ function setup() {
   ship = new Ship(0, true);
   linkAsteroids.push(new Links('Github', 'https://github.com/KKeySimon'));
   linkAsteroids.push(new Links('ArtGuessr', 'https://artguessr.art'));
+  linkAsteroids.push(new Links('BUCourseSearch2.0', 'https://bucoursesearch.web.app'));
   newGame();
 }
 
